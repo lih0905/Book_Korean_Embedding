@@ -1,10 +1,10 @@
 ## KorQuad 전처리
 
 import json
-corpus_fname = 'data/raw/KorQuAD_v1.0_dev.json'
-output_fname = 'data/processed/processed_korquad_dev.txt'
+corpus_fname = 'data/raw/KorQuAD_v1.0_train.json'
+output_fname = 'data/processed/processed_korquad_train.txt'
 
-with open(corpus_fname,'r') as f1, open(output_fname,'w',encoding='utf-8') as f2:
+with open(corpus_fname,'r',encoding='utf-8') as f1, open(output_fname,'w',encoding='utf-8') as f2:
     dataset_json = json.load(f1)
     dataset = dataset_json['data']
     for data in dataset:
