@@ -110,3 +110,23 @@ for epo in range(epoch):
 
 save_path = 'NPLM_{}epoch.pt'.format(epoch)
 torch.save(model.state_dict(), save_path)
+
+model = NPLM(N, VEC_DIM, HIDDEN_DIM)
+model.load_state_dict(torch.load(save_path))
+model.eval()
+
+def similar_words(model, word, k=10):
+    cos = nn.CosineSimilarity(dim=1, eps=1e-6)
+
+    word_id = torch.tensor([word_to_id[word]])
+    word_vec = model.emb(word_id)
+    word_mat = next(iter(model.emb.parameters())).detach()
+
+    cos_mat = cos(word_vec, word_mat)
+    sim, indices = torch.topk(cos_mat, k + 1)
+
+    word_list = []
+    for i in indices:
+        if i != word_id:
+            word_list.append(id_to_word[i])
+    return word_list, sim[1:].detach()
